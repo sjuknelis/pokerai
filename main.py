@@ -79,7 +79,7 @@ def score_hand(hand):
   is_royal = hand_indices == [0,10,11,12,13]
   if is_royal:
     is_straight = True
-  
+
   hand_id = 0
   hand_addl = 0
   if is_flush:
