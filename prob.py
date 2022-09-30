@@ -1,4 +1,5 @@
 import math
+from pprint import pprint
 
 CARD_NAMES = ["ace","2","3","4","5","6","7","8","9","10","jack","queen","king"]
 
@@ -100,5 +101,6 @@ def pprint_table(table):
       count = 1
     print("%d: %d    \t%s" % (score,count,"#" * math.ceil(count / max_count * 50)))
 
-table = score_hands_for_player([3,4])
-print(avg_from_table(table))
+print(avg_from_table(score_hands_for_player([3,4])))
+print(avg_from_table(score_hands_for_player([11,12])))
+print(avg_from_table(calc_overall_table()))

@@ -1,15 +1,17 @@
-import pygame,random,sys,time
+import random,sys,time
 
 SUITS = ["clubs","diamonds","hearts","spades"]
 CARD_NAMES = ["ace","2","3","4","5","6","7","8","9","10","jack","queen","king"]
 IMAGE_RATIO = 726 / 500
 SCREEN_SIZE = 600
 
-card_images = []
-for suit in SUITS:
-  for card_name in CARD_NAMES:
-    card_images.append(pygame.image.load("cards/" + card_name + "_of_" + suit + ".png"))
-card_images.append(pygame.image.load("cards/hidden.png"))
+if __name__ == "__main__":
+  import pygame
+  card_images = []
+  for suit in SUITS:
+    for card_name in CARD_NAMES:
+      card_images.append(pygame.image.load("cards/" + card_name + "_of_" + suit + ".png"))
+  card_images.append(pygame.image.load("cards/hidden.png"))
 
 class Card:
   hidden_cb = lambda self: False
