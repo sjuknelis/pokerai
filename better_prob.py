@@ -49,16 +49,16 @@ def three_player_sim(hand,table_shown,bets):
   ]
   table = table_shown + deck.pull_random(5 - len(table_shown))
   scores = [score_possible_hands(player,table) for player in players]
-
+   
   BET_FACTOR = 0.5
   scores = [score + bets[index] * len(table_shown) * BET_FACTOR for (index,score) in enumerate(scores)]
 
   return scores
 
-SIM_COUNT = 100
-HAND = [Card(0,1),Card(0,2)]
-TABLE = [Card(0,3),Card(1,3),Card(0,4)]
-BETS = [0,3,0]
+SIM_COUNT = 1000
+HAND = [Card(0,11),Card(0,12)]
+TABLE = []
+BETS = [0,0,1]
 if __name__ == "__main__":
   totals = [0,0,0]
   win_rate = 0
