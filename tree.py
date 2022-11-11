@@ -46,7 +46,6 @@ def simulate(node):
     cards[7:9],
     cards[9:]
   ]
-  print(cards)
   scores = [score_possible_hands(player,table) for player in players]
   return scores
 
@@ -59,15 +58,15 @@ def select_random_child(node):
     if value <= 0:
       return child
 
-def monte_carlo_from_node(node,table_depth,sim_count):
+def monte_carlo_from_node(node,sim_count):
   wins = 0
   original_node = node
   for _i in range(sim_count):
-    print(len(node.suits_seen))
     for _j in range(11 - len(node.suits_seen)):
       node = select_random_child(node)
       node = select_random_child(node)
-      print(_j)
+    if len(node.numbers_seen) < 11:
+      node = select_random_child(node)
     scores = simulate(node)
     if scores[0] == max(scores):
       wins += 1
@@ -88,6 +87,19 @@ def dfs_list(node,max_count,max_depth):
   dfs(node,0)
   return result
 
+def bfs_list(node,max_count):
+  result = set([node])
+  queue = [node]
+  while len(queue) > 0 and len(result) < max_count:
+    chosen = queue.pop(0)
+    for (child,odds) in node.get_children():
+      if len(result) >= max_count:
+        return result
+      if child not in result:
+        result.add(child)
+        queue.append(child)
+  return result
+
 def djikstra_mod_list(node,max_count):
   found_nodes = []
   heap = Heap(node.get_children())
@@ -103,7 +115,7 @@ class Heap:
   def __init__(self,data):
     for item in data:
       self.insert(item)
-  def bubble_up(self,index):
+  def push_up(self,index):
     parent_index = index
     while parent_index > 0:
       current_index = parent_index
@@ -139,7 +151,7 @@ class Heap:
         return
   def insert(self,item):
     self.data.append(item)
-    self.bubble_up(len(self.data) - 1)
+    self.push_up(len(self.data) - 1)
   def pop(self):
     if len(self.data) == 0:
       return None
@@ -155,9 +167,16 @@ class Heap:
 node = NumberNode(0,[0,0,1],[8,9,12],None)
 #print(monte_carlo_from_node(node,[Card(0,8),Card(0,9)],3,[Card(1,12)],500))
 print(node)
-found = djikstra_mod_list(node,10)
+found = bfs_list(node,20)
+probs = []
 for found_node in found:
-  print(monte_carlo_from_node(found_node,4,500))
+  probs.append(monte_carlo_from_node(found_node,500))
+probs.sort()
+print(probs)
+diffs = []
+for i in range(len(probs) - 1):
+  diffs.append(round(probs[i + 1] - probs[i],3))
+print(diffs)
 
 """h = Heap([("a",2),("b",5),("c",1),("d",6)])
 print(h.pop())
