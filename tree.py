@@ -167,7 +167,7 @@ class Heap:
 node = NumberNode(0,[0,0,1],[8,9,12],None)
 #print(monte_carlo_from_node(node,[Card(0,8),Card(0,9)],3,[Card(1,12)],500))
 print(node)
-found = bfs_list(node,20)
+found = dfs_list(node,20,2)
 probs = []
 for found_node in found:
   probs.append(monte_carlo_from_node(found_node,500))
@@ -177,6 +177,8 @@ diffs = []
 for i in range(len(probs) - 1):
   diffs.append(round(probs[i + 1] - probs[i],3))
 print(diffs)
+print(round(sum(probs) / len(probs),2))
+print(round(sum(diffs) / len(diffs),2))
 
 """h = Heap([("a",2),("b",5),("c",1),("d",6)])
 print(h.pop())
