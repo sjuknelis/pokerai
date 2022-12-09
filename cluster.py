@@ -82,5 +82,21 @@ def simulated_annealing(points,max_iterations):
   
   return (origin,total_of_dists(origin))
 
-probs = [0.352, 0.36, 0.376, 0.378, 0.384, 0.386, 0.39, 0.394, 0.398, 0.398, 0.402, 0.408, 0.416, 0.418, 0.42, 0.436, 0.44, 0.578, 0.656, 0.658]
-print(simulated_annealing(probs,10))
+def run_cluster_algorithm(algorithm,probs,kmeans_clusters,verbose):
+  if algorithm == "kmeans":
+    (cluster_values,clusters) = kmeans(probs,kmeans_clusters,25)
+    if verbose:
+      print("Actual cluster division: %s" % str(clusters))
+    return cluster_values
+  elif algorithm == "gd":
+    (value,score) = gradient_descent(probs,25)
+    if verbose:
+      print("Clustering score: %s" % str(score))
+    return value
+  elif algorithm == "sa":
+    (value,score) = simulated_annealing(probs,25)
+    if verbose:
+      print("Clustering score: %s" % str(score))
+    return value
+  elif algorithm == "avg":
+    return sum(probs) / len(probs)

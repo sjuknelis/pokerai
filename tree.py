@@ -2,7 +2,7 @@ from functools import cmp_to_key
 import random,math
 
 from better_prob import Card
-from main import score_possible_hands
+from game import score_possible_hands
 
 class SuitNode:
   def __init__(self,value,suits_seen,numbers_seen,parent):
@@ -164,24 +164,24 @@ class Heap:
       self.push_down(0)
       return old_root
 
-node = NumberNode(0,[0,0,1],[8,9,12],None)
-#print(monte_carlo_from_node(node,[Card(0,8),Card(0,9)],3,[Card(1,12)],500))
-print(node)
-found = dfs_list(node,20,2)
-probs = []
-for found_node in found:
-  probs.append(monte_carlo_from_node(found_node,500))
-probs.sort()
-print(probs)
-diffs = []
-for i in range(len(probs) - 1):
-  diffs.append(round(probs[i + 1] - probs[i],3))
-print(diffs)
-print(round(sum(probs) / len(probs),2))
-print(round(sum(diffs) / len(diffs),2))
+SUITS = ["c","h","s","d"]
+NUMBERS = ["a","2","3","4","5","6","7","8","9","j","q","k"]
 
-"""h = Heap([("a",2),("b",5),("c",1),("d",6)])
-print(h.pop())
-print(h.pop())
-print(h.pop())
-print(h.pop())"""
+def run_tree_algorithm(algorithm,player_cards,table_cards,verbose):
+  all_cards = [card for card in player_cards + table_cards if card != ""]
+  suit_indices = [SUITS.index(card[0]) for card in all_cards]
+  number_indices = [NUMBERS.index(card[1]) for card in all_cards]
+  node = NumberNode(0,suit_indices,number_indices,None)
+  if algorithm == "bfs":
+    found = bfs_list(node,20)
+  elif algorithm == "dfs":
+    found = dfs_list(node,20,2)
+  elif algorithm == "djikstra":
+    found = djikstra_mod_list(node,20)
+  probs = []
+  for found_node in found:
+    probs.append(monte_carlo_from_node(found_node,200))
+  probs.sort()
+  if verbose:
+    print("Calculated probabilties: %s" % str(probs))
+  return probs

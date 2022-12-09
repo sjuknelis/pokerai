@@ -1,5 +1,5 @@
 import random
-from main import score_possible_hands
+from game import score_possible_hands
 
 SUITS = ["clubs","diamonds","hearts","spades"]
 CARD_NAMES = ["ace","2","3","4","5","6","7","8","9","10","jack","queen","king"]
